@@ -2,6 +2,6 @@
 bin/
 obj/
 node_modules/
-UserService/env
-StoryService/env
-SharingGateway/env
+UserService/UserService/env
+StoryService/StoryService/env
+SharingGateway/SharingGateway/env
