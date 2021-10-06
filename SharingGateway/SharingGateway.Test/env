@@ -1,0 +1,2 @@
+JWT_KEY            > 0123456789ABCDEFGHILM
+JWT_AUDIENCE       > flowing

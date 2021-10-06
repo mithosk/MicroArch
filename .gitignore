@@ -1,5 +1,7 @@
 .vs/
 bin/
 obj/
-env
 node_modules/
+UserService/env
+StoryService/env
+SharingGateway/env
