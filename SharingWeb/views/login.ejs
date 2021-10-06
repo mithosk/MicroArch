@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>SharingWeb</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/logo.png" />
+</head>
+<body class="body">
+    <div class="darkArea" style="position:relative; width:400px; height:300px; margin-left:auto; margin-right:auto; margin-top:50px; padding-left:20px; padding-top:10px;">
+        <span style="position:relative; font-size:40px; margin-left:18px;">Login</span>
+        <form action="/login" method="post">
+            <input type="text" name="email" class="textInput" style="position:relative; margin-left:18px; margin-top:50px; width:340px;" placeholder="Email" />
+            <br />
+            <input type="password" name="password" class="textInput" style="position:relative; margin-left:18px; margin-top:20px; width:340px;" placeholder="Password" />
+            <br />
+            <br />
+            <span class="labelError" style="position:relative; margin-left:18px;"><%= error %></span>
+            <br />
+            <input type="submit" class="buttonBig" style="position:relative; margin-left:255px; margin-top:15px;" value="Invia" />
+        </form>
+    </div>
+</body>
+</html>

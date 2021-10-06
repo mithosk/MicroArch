@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryService", "StoryService\StoryService.csproj", "{A7E9E214-62EA-4E97-AD38-364653CBF38E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoryService.Test", "StoryService.Test\StoryService.Test.csproj", "{FCC4003F-BD1E-416A-976D-F5D75537998C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7E9E214-62EA-4E97-AD38-364653CBF38E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E9E214-62EA-4E97-AD38-364653CBF38E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E9E214-62EA-4E97-AD38-364653CBF38E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E9E214-62EA-4E97-AD38-364653CBF38E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCC4003F-BD1E-416A-976D-F5D75537998C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC4003F-BD1E-416A-976D-F5D75537998C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC4003F-BD1E-416A-976D-F5D75537998C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC4003F-BD1E-416A-976D-F5D75537998C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA482C15-6BF0-480D-A05C-DD72E36314C3}
+	EndGlobalSection
+EndGlobal

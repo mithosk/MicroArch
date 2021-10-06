@@ -1,0 +1,68 @@
+<html>
+<head>
+    <title>SharingWeb</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/logo.png" />
+
+    <script>
+        var marker = null;
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 11,
+                center: { lat: 43.98678, lng: 12.64662 }
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                if (marker != null)
+                    marker.setMap(null);
+
+                marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: map,
+                });
+
+                var lat = event.latLng.lat().toFixed(5);
+                var lng = event.latLng.lng().toFixed(5);
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+            });
+        }
+    </script>
+    
+</head>
+<body class="body">
+    <div style="position:absolute; left:0px; right:0px; top:0px; bottom:0px; background-color:#ECECEC; padding:20px;">
+        <form action="/publish-story" method="post">
+            <select name="type" class="selectInput" style="position:relative; width:340px;">
+                <option value="">Tipo di storia</option>
+                <option value="ghost">Ghost</option>
+                <option value="alien">Alien</option>
+                <option value="monster">Monster</option>
+                <option value="murderer">Murderer</option>
+            </select>
+            <br />
+            <br />
+            <input type="text" name="title" class="textInput" style="position:relative; width:340px;" placeholder="Title" />
+            <br />
+            <br />
+            <textarea name="tale" class="textInput" style="position:relative; width:340px;" rows="5" placeholder="Tale"></textarea>
+            <br />
+            <br />
+            <input id="latitude" type="text" name="latitude" class="textInput" style="position:relative; width:150px;" placeholder="Latitude" />
+            <input id="longitude" type="text" name="longitude" class="textInput" style="position:relative; width:150px; margin-left:35px;" placeholder="Longitude" />
+            <br />
+            <br />
+            <input type="submit" class="buttonBig" style="position:relative;" value="Pubblica" />
+            <br />
+            <br />
+            <span class="labelError">
+                <%= error %>
+            </span>
+        </form>
+        <input type="submit" class="buttonBig" style="position:absolute; left:20px; bottom:20px;" value="Indietro" onclick="window.location.replace('/story-list');" />
+        <div id="map" style="position:absolute; left:410px; top:20px; width:350px; height:315px;" />
+        <script src="https://maps.googleapis.com/maps/api/js?key=<%= mapApyKey %>&callback=initMap&libraries=&v=weekly" async></script>
+    </div>
+</body>
+</html>

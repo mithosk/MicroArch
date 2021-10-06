@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>SharingWeb</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/logo.png" />
+
+    <script>
+        function initMap() {
+            var latitude = parseFloat(document.getElementById('latitude').value);
+            var longitude = parseFloat(document.getElementById('longitude').value);
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 13,
+                center: { lat: latitude, lng: longitude }
+            });
+
+            new google.maps.Marker({
+                position: { lat: latitude, lng: longitude },
+                map: map,
+            });
+        }
+    </script>
+
+</head>
+<body class="body">
+    <input id="latitude" type="hidden" value="<%= story.latitude %>" />
+    <input id="longitude" type="hidden" value="<%= story.longitude %>" />
+    <div style="position:absolute; left:0px; right:0px; top:0px; bottom:0px; padding:30px;">
+        <input type="button" class="buttonBig" style="position:absolute; right:20px; bottom:10px;" value="Indietro" onclick="window.location.replace('/story-list');" /> 
+        <span style="position:relative; font-size:25px; font-weight:bold;">
+            <%= story.title %>
+        </span>
+        <br />
+        <span style="position:relative; font-size:15px;">
+            <%= story.type %>
+        </span>
+        <br />
+        <br />
+        <span style="position:relative; font-size:15px;">
+            <i><%= user.name %> <%= user.surname %> (<%= story.publicationDate %>)</i>
+        </span>
+        <br />
+        <br />
+        <span style="position:relative; font-size:15px;">
+            <%= story.tale %>
+        </span>
+        <br />
+        <br />
+        <div id="map" style="position:relative; width:300px; height:300px;" />
+        <script src="https://maps.googleapis.com/maps/api/js?key=<%= mapApyKey %>&callback=initMap&libraries=&v=weekly" async></script>
+    </div>   
+</body>
+</html>

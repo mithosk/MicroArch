@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>SharingWeb</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/logo.png" />
+
+    <script>
+        function getPageParam(paramName) {
+            return decodeURIComponent((new RegExp('[?|&]' + paramName + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
+        }
+
+        function loadPage() {
+            document.getElementById('searchText').value = getPageParam('text');
+        }
+    </script>
+
+</head>
+<body class="body" onload="loadPage();">
+    <div class="darkArea" style="position:absolute; left:0px; right:0px; top:0px; height:70px;">
+        <br />
+        <span style="position:absolute; left:15px; top:10px; font-size:15px;">
+            <%= user.name %>
+            <%= user.surname %>
+        </span>
+        <span style="position:absolute; left:15px; top:30px; font-size:13px; color:#C6B700;">
+            <%= user.publishedStories %> storie pubblicate
+        </span>
+        <input id="searchText" type="text" class="textInput" style="position:absolute; left:180px; top:10px;" placeholder="Ricerca" onchange="window.location.replace('/story-list/?text=' + document.getElementById('searchText').value);" />
+        <input type="button" class="buttonBig" style="position:absolute; right:254px; top:11px;" value="Logout" onclick="window.location.replace('/logout');" />
+        <input type="button" class="buttonBig" style="position:absolute; right:15px; top:11px;" value="Scrivi" onclick="window.location.replace('/new-story');" />
+        <input type="button" class="buttonBig" style="position:absolute; right:140px; top:11px;" value="POI" onclick="window.location.replace('/poi');" />
+    </div>
+    <div style="position:absolute; left:0px; right:0px; top:70px; bottom:10px; overflow-y:scroll; overflow-x:hidden;">     
+        <% for(var i=0; i<stories.length; i++) {%>
+            <div style="padding:10px;">
+                <br />
+                <span style="font-weight:bold; text-decoration: underline; cursor:pointer;" onclick="window.location.replace('/story-detail/<%= stories[i].id %>');">
+                    <%= stories[i].title %>
+                </span>
+                <br />
+                <span>
+                    <%= stories[i].tale %>
+                </span>
+                <br />
+                <br />
+            </div>
+        <% } %>
+    </div>
+    <div class="darkArea" style="position:absolute; left:0px; right:0px; bottom:0px; height:10px;" />
+</body>
+</html>

@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>SharingWeb</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../images/logo.png" />
+
+    <script>
+        var markers = [];
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 11,
+                center: { lat: 43.98678, lng: 12.64662 }
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                function reqListener() {
+                    var json = JSON.parse(this.responseText);
+
+                    if (json.length > 0)
+                        alert('Trovati ' + json.length + ' POI');
+
+                    for (var i = 0; i < markers.length; i++)
+                        markers[i].setMap(null);
+                    markers = [];
+
+                    for (var i = 0; i < json.length; i++) {
+                        var marker = new google.maps.Marker({
+                            position: { lat: json[i].latitude, lng: json[i].longitude },
+                            label: { text: json[i].type.toUpperCase() },
+                            map: map,
+                        });
+
+                        markers.push(marker);
+                    }
+                }
+
+                var req = new XMLHttpRequest();
+                req.addEventListener("load", reqListener);
+                req.open("GET", "http://localhost:30083/poi/?latitude=" + event.latLng.lat() + "&longitude=" + event.latLng.lng() + "&radius=30");
+                req.send();
+            });
+        }
+    </script>
+
+</head>
+<body class="body">
+    <input type="button" class="buttonBig" style="position:absolute; left:20px; bottom:10px;" value="Indietro" onclick="window.location.replace('/story-list');" />
+    <div id="map" style="position:absolute; left:20px; right:20px; top:20px; bottom:80px;" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= mapApyKey %>&callback=initMap&libraries=&v=weekly" async></script> 
+</body>
+</html>
