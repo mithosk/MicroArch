@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Json\POIFilter.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
