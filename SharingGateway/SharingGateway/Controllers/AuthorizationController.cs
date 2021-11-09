@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SharingGateway.Models;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,11 @@ namespace SharingGateway.Controllers
             {
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Env.Get("JWT_KEY"))), SecurityAlgorithms.HmacSha256Signature),
-                Audience = Env.Get("JWT_AUDIENCE")
+                Audience = Env.Get("JWT_AUDIENCE"),
+                Claims = new Dictionary<string, object>
+                {
+                    { "UserId", userId.ToString() }
+                }
             };
 
             JwtSecurityTokenHandler tokenHandler = new();

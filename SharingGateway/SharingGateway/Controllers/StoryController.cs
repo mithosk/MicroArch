@@ -1,5 +1,6 @@
 ﻿using AgileServiceBus.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using SharingGateway.Extensions;
 using SharingGateway.Models;
 using SharingGateway.Models.Enums;
 using SharingGateway.Models.Filters;
@@ -68,10 +69,8 @@ namespace SharingGateway.Controllers
         public async Task<ActionResult<List<Story>>> List([FromQuery] StoryFilter filter)
         {
             //request pagination parameters
-            string pageIndexHeader = Request.Headers["PageIndex"].ToString();
-            string pageSizeHeader = Request.Headers["PageSize"].ToString();
-            uint pageIndex = string.IsNullOrEmpty(pageIndexHeader) ? DEFAULT_PAGE_INDEX : uint.Parse(pageIndexHeader);
-            ushort pageSize = string.IsNullOrEmpty(pageSizeHeader) ? DEFAULT_PAGE_SIZE : ushort.Parse(pageSizeHeader);
+            uint pageIndex = Request.GetPageIndex() ?? DEFAULT_PAGE_INDEX;
+            ushort pageSize = Request.GetPageSize() ?? DEFAULT_PAGE_SIZE;
 
             //story list
             FlowingStoryModels.Stories stories = await _bus.RequestAsync<FlowingStoryModels.Stories>(new FlowingStoryRequests.StoryList
@@ -83,10 +82,10 @@ namespace SharingGateway.Controllers
             _traceScope);
 
             //response pagination parameters
-            Response.Headers.Add("PageIndex", pageIndex.ToString());
-            Response.Headers.Add("PageSize", pageSize.ToString());
-            Response.Headers.Add("PageCount", stories.PageCount.ToString());
-            Response.Headers.Add("TotalItemCount", stories.TotalItemCount.ToString());
+            Response.SetPageIndex(pageIndex);
+            Response.SetPageSize(pageSize);
+            Response.SetPageCount(stories.PageCount);
+            Response.SetTotalItemCount(stories.TotalItemCount);
 
             //response mapping
             return stories.Items
