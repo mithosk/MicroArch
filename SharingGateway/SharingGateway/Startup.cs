@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using SharingGateway.Filters;
 using SharingGateway.Validators;
 using System.Text;
 
@@ -30,7 +31,7 @@ namespace SharingGateway
             }));
 
             //controllers
-            services.AddControllers()
+            services.AddControllers(mov => mov.Filters.Add<BusExceptionFilter>())
                 .AddNewtonsoftJson(mnj => JsonConverter.SetUp(mnj.SerializerSettings))
                 .AddFluentValidation(fvm =>
                 {
