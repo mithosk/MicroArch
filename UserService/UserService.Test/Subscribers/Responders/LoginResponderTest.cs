@@ -9,6 +9,7 @@ using UserService.Data.Models;
 using UserService.Subscribers.Responders;
 using UserService.Utilities.Logic;
 using Xunit;
+using FlowingUserModels = UserService.BusNamespaces.Flowing.User.Models;
 using FlowingUserRequests = UserService.BusNamespaces.Flowing.User.Requests;
 
 namespace UserService.Test.Subscribers.Responders
@@ -23,16 +24,16 @@ namespace UserService.Test.Subscribers.Responders
             PasswordUtility passwordUtility = A.Fake<PasswordUtility>();
 
             //execution
-            Guid? responseExternalId;
+            FlowingUserModels.Access access;
             using (IDataContext dataContext = new DataContext(_dataOptions))
             {
                 LoginResponder responder = new(dataContext, passwordUtility);
                 responder.TraceScope = A.Fake<ITraceScope>();
-                responseExternalId = (Guid?)await responder.RespondAsync(message);
+                access = (FlowingUserModels.Access)await responder.RespondAsync(message);
             }
 
             //check
-            Assert.Null(responseExternalId);
+            Assert.Null(access);
         }
 
         [Theory]
@@ -58,21 +59,21 @@ namespace UserService.Test.Subscribers.Responders
                 .Returns("ABCDE");
 
             //execution
-            Guid? responseExternalId;
+            FlowingUserModels.Access access;
             using (IDataContext dataContext = new DataContext(_dataOptions))
             {
                 LoginResponder responder = new(dataContext, passwordUtility);
                 responder.TraceScope = A.Fake<ITraceScope>();
-                responseExternalId = (Guid?)await responder.RespondAsync(message);
+                access = (FlowingUserModels.Access)await responder.RespondAsync(message);
             }
 
             //check
-            Assert.Null(responseExternalId);
+            Assert.Null(access);
         }
 
         [Theory]
         [MemberData(nameof(LoadMessages))]
-        public async Task SuccessfullyAuthentication(FlowingUserRequests.Login message)
+        public async Task NewAccessKeyAuthentication(FlowingUserRequests.Login message)
         {
             //data context fake
             Guid userExternalId = Guid.NewGuid();
@@ -82,7 +83,8 @@ namespace UserService.Test.Subscribers.Responders
                 {
                     ExternalId = userExternalId,
                     Email = message.Email,
-                    PasswordHash = "12345"
+                    PasswordHash = "12345",
+                    AccessKey = null
                 });
 
                 await dataContext.SaveChangesAsync();
@@ -94,16 +96,56 @@ namespace UserService.Test.Subscribers.Responders
                 .Returns("12345");
 
             //execution
-            Guid? responseExternalId;
+            FlowingUserModels.Access access;
             using (IDataContext dataContext = new DataContext(_dataOptions))
             {
                 LoginResponder responder = new(dataContext, passwordUtility);
                 responder.TraceScope = A.Fake<ITraceScope>();
-                responseExternalId = (Guid?)await responder.RespondAsync(message);
+                access = (FlowingUserModels.Access)await responder.RespondAsync(message);
             }
 
             //check
-            Assert.Equal(userExternalId, responseExternalId);
+            Assert.Equal(userExternalId, access.UserId);
+            Assert.NotEqual(Guid.Empty, access.AccessKey);
+        }
+
+        [Theory]
+        [MemberData(nameof(LoadMessages))]
+        public async Task OldAccessKeyAuthentication(FlowingUserRequests.Login message)
+        {
+            //data context fake
+            Guid userExternalId = Guid.NewGuid();
+            Guid accessKey = Guid.NewGuid();
+            using (IDataContext dataContext = new DataContext(_dataOptions))
+            {
+                await dataContext.Users.AddAsync(new User
+                {
+                    ExternalId = userExternalId,
+                    Email = message.Email,
+                    PasswordHash = "12345",
+                    AccessKey = accessKey
+                });
+
+                await dataContext.SaveChangesAsync();
+            }
+
+            //password utility fake
+            PasswordUtility passwordUtility = A.Fake<PasswordUtility>();
+            A.CallTo(() => passwordUtility.ToHash(A<string>.Ignored))
+                .Returns("12345");
+
+            //execution
+            FlowingUserModels.Access access;
+            using (IDataContext dataContext = new DataContext(_dataOptions))
+            {
+                LoginResponder responder = new(dataContext, passwordUtility);
+                responder.TraceScope = A.Fake<ITraceScope>();
+                access = (FlowingUserModels.Access)await responder.RespondAsync(message);
+            }
+
+            //check
+            Assert.Equal(userExternalId, access.UserId);
+            Assert.Equal(accessKey, access.AccessKey);
         }
 
         public static List<object[]> LoadMessages()
