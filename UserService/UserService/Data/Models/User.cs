@@ -20,6 +20,8 @@ namespace UserService.Data.Models
         [MaxLength(1000)]
         public string PasswordHash { get; set; }
 
+        public Guid? AccessKey { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
