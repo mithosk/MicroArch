@@ -29,6 +29,9 @@
     <None Update="Json\Events\PublishedStory.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Json\Requests\ValidateAccessKey.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Json\Requests\UserDetail.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
