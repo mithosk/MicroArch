@@ -36,6 +36,7 @@ namespace UserService
             //responders
             _ml.Subscribe<LoginResponder, Login>(new LoginValidator());
             _ml.Subscribe<UserDetailResponder, UserDetail>(new UserDetailValidator());
+            _ml.Subscribe<ValidateAccessKeyResponder, ValidateAccessKey>(new ValidateAccessKeyValidator());
 
 
 
