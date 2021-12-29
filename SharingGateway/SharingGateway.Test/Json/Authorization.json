@@ -3,6 +3,14 @@
     "Email": "mithosk85@gmail.com",
     "Password": "luca",
     "Token": null,
+    "RefreshToken": null,
     "UserId": null
+  },
+  {
+    "Email": null,
+    "Password": null,
+    "Token": null,
+    "RefreshToken": "2a18a717-117b-40b8-aac9-ed6699506da5",
+    "UserId": "ad31b36c-3b32-4b4e-88ed-fb0b4452651a"
   }
 ]
