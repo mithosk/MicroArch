@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
+using FlowingUserModels = SharingGateway.BusNamespaces.Flowing.User.Models;
 using FlowingUserRequests = SharingGateway.BusNamespaces.Flowing.User.Requests;
 
 namespace SharingGateway.Controllers
@@ -17,6 +18,8 @@ namespace SharingGateway.Controllers
     [Route("authorizations")]
     public class AuthorizationController : Controller
     {
+        private const byte TOKEN_EXPIRES_HOURS = 8;
+
         private readonly IGatewayBus _bus;
         private readonly ITraceScope _traceScope;
 
@@ -30,40 +33,61 @@ namespace SharingGateway.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<Authorization>> Post(Authorization body)
         {
-            //authentication
-            Guid? userId = await _bus.RequestAsync<Guid?>(new FlowingUserRequests.Login
-            {
-                Email = body.Email,
-                Password = body.Password
-            },
-            _traceScope);
+            //response data
+            Authorization authorization = new();
 
-            //failure
-            if (!userId.HasValue)
-                return Forbid();
+            //login authentication
+            if (!body.RefreshToken.HasValue)
+            {
+                FlowingUserModels.Access access = await _bus.RequestAsync<FlowingUserModels.Access>(new FlowingUserRequests.Login
+                {
+                    Email = body.Email,
+                    Password = body.Password
+                },
+                _traceScope);
+
+                if (access == null)
+                    return Forbid();
+
+                authorization.RefreshToken = access.AccessKey;
+                authorization.UserId = access.UserId;
+            }
+
+            //refresh authentication
+            if (body.RefreshToken.HasValue)
+            {
+                bool valid = await _bus.RequestAsync<bool>(new FlowingUserRequests.ValidateAccessKey
+                {
+                    UserId = body.UserId.Value,
+                    AccessKey = body.RefreshToken.Value
+                },
+                _traceScope);
+
+                if (!valid)
+                    return Forbid();
+
+                authorization.RefreshToken = body.RefreshToken.Value;
+                authorization.UserId = body.UserId.Value;
+            }
 
             //jwt token generation
             SecurityTokenDescriptor tokenDescriptor = new()
             {
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Env.Get("JWT_KEY"))), SecurityAlgorithms.HmacSha256Signature),
+                Expires = DateTime.UtcNow.AddHours(TOKEN_EXPIRES_HOURS),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Env.Get("JWT_KEY"))), SecurityAlgorithms.HmacSha256Signature),
                 Audience = Env.Get("JWT_AUDIENCE"),
                 Claims = new Dictionary<string, object>
                 {
-                    { "UserId", userId.ToString() }
+                    { "UserId", authorization.UserId.ToString() }
                 }
             };
 
             JwtSecurityTokenHandler tokenHandler = new();
             SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            string token = tokenHandler.WriteToken(securityToken);
+            authorization.Token = tokenHandler.WriteToken(securityToken);
 
             //response
-            return new Authorization
-            {
-                Token = token,
-                UserId = userId
-            };
+            return authorization;
         }
     }
 }
