@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
+using FlowingUserModels = SharingGateway.BusNamespaces.Flowing.User.Models;
 using FlowingUserRequests = SharingGateway.BusNamespaces.Flowing.User.Requests;
 
 namespace SharingGateway.Test.Controllers
@@ -19,8 +20,12 @@ namespace SharingGateway.Test.Controllers
         {
             //bus fake
             IGatewayBus bus = A.Fake<IGatewayBus>();
-            A.CallTo(() => bus.RequestAsync<Guid?>(A<FlowingUserRequests.Login>.Ignored, A<ITraceScope>.Ignored))
-                .Returns((Guid?)null);
+
+            A.CallTo(() => bus.RequestAsync<FlowingUserModels.Access>(A<FlowingUserRequests.Login>.Ignored, A<ITraceScope>.Ignored))
+                .Returns((FlowingUserModels.Access)null);
+
+            A.CallTo(() => bus.RequestAsync<bool>(A<FlowingUserRequests.ValidateAccessKey>.Ignored, A<ITraceScope>.Ignored))
+                .Returns(false);
 
             //trace scope fake
             ITraceScope traceScope = A.Fake<ITraceScope>();
@@ -37,11 +42,21 @@ namespace SharingGateway.Test.Controllers
         [MemberData(nameof(LoadBodies))]
         public async Task SuccessfullyAuthentication(Authorization body)
         {
+            Guid refreshToken = body.RefreshToken ?? Guid.NewGuid();
+            Guid userId = body.UserId ?? Guid.NewGuid();
+
             //bus fake
-            Guid userId = Guid.NewGuid();
             IGatewayBus bus = A.Fake<IGatewayBus>();
-            A.CallTo(() => bus.RequestAsync<Guid?>(A<FlowingUserRequests.Login>.Ignored, A<ITraceScope>.Ignored))
-                .Returns(userId);
+
+            A.CallTo(() => bus.RequestAsync<FlowingUserModels.Access>(A<FlowingUserRequests.Login>.Ignored, A<ITraceScope>.Ignored))
+                .Returns(new FlowingUserModels.Access
+                {
+                    UserId = userId,
+                    AccessKey = refreshToken
+                });
+
+            A.CallTo(() => bus.RequestAsync<bool>(A<FlowingUserRequests.ValidateAccessKey>.Ignored, A<ITraceScope>.Ignored))
+                .Returns(true);
 
             //trace scope fake
             ITraceScope traceScope = A.Fake<ITraceScope>();
@@ -51,10 +66,11 @@ namespace SharingGateway.Test.Controllers
 
             //check
             Assert.Null(response.Result);
-            Assert.NotNull(response.Value.Token);
-            Assert.Equal(userId, response.Value.UserId);
             Assert.Null(response.Value.Email);
             Assert.Null(response.Value.Password);
+            Assert.NotNull(response.Value.Token);
+            Assert.Equal(refreshToken, response.Value.RefreshToken);
+            Assert.Equal(userId, response.Value.UserId);
         }
 
         public static List<object[]> LoadBodies()
