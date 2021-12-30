@@ -3,6 +3,7 @@ using AgileServiceBus.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SharingGateway.Extensions;
 using SharingGateway.Models;
 using System;
 using System.Collections.Generic;
@@ -88,6 +89,24 @@ namespace SharingGateway.Controllers
 
             //response
             return authorization;
+        }
+
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            if (id != Request.GetUserId())
+                return Forbid();
+
+            bool found = await _bus.RequestAsync<bool>(new FlowingUserRequests.ResetAccessKey
+            {
+                UserId = id
+            },
+            _traceScope);
+
+            if (!found)
+                return NotFound();
+            else
+                return Ok();
         }
     }
 }
