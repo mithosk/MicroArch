@@ -99,7 +99,6 @@ namespace StoryService.Test.Subscribers.Responders
                 Assert.Equal(story.PublicationDate, publishedStory.PublicationDate);
                 Assert.Equal(story.UserId, publishedStory.UserId);
             }
-
         }
 
         public static List<object[]> LoadMessages()
