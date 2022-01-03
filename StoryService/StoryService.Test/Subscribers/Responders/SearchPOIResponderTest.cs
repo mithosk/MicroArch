@@ -51,30 +51,40 @@ namespace StoryService.Test.Subscribers.Responders
                     new Story
                     {
                         Type = StoryType.Alien,
+                        Title = "title",
+                        Tale = "tale",
                         Latitude = (float)44.1,
                         Longitude = (float)12.2
                     },
                     new Story
                     {
                         Type = StoryType.Alien,
+                        Title = "title",
+                        Tale = "tale",
                         Latitude = (float)44.3,
                         Longitude = (float)12.4
                     },
                     new Story
                     {
                         Type = StoryType.Ghost,
+                        Title = "title",
+                        Tale = "tale",
                         Latitude = (float)44.5,
                         Longitude = (float)12.6
                     },
                     new Story
                     {
                         Type = StoryType.Ghost,
+                        Title = "title",
+                        Tale = "tale",
                         Latitude = (float)44.7,
                         Longitude = (float)12.8
                     },
                     new Story
                     {
                         Type = StoryType.Monster,
+                        Title = "title",
+                        Tale = "tale",
                         Latitude = (float)44.8,
                         Longitude = (float)12.9
                     }
