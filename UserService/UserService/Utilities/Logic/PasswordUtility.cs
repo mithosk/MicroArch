@@ -18,7 +18,7 @@ namespace UserService.Utilities.Logic
             //hashing
             UnicodeEncoding encoding = new();
             byte[] passwordBytes = encoding.GetBytes(password);
-            SHA512 provider = new SHA512CryptoServiceProvider();
+            SHA512 provider = SHA512.Create();
             byte[] hashBytes = provider.ComputeHash(passwordBytes);
 
             //from bytes to string
