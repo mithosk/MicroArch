@@ -41,6 +41,10 @@ namespace UserService.Test.Subscribers.Responders
                 await dataContext.Users.AddAsync(new User
                 {
                     ExternalId = message.UserId,
+                    Email = "email",
+                    PasswordHash = "password",
+                    Name = "name",
+                    Surname = "surname",
                     AccessKey = Guid.NewGuid()
                 });
 
@@ -70,7 +74,11 @@ namespace UserService.Test.Subscribers.Responders
                 await dataContext.Users.AddAsync(new User
                 {
                     ExternalId = message.UserId,
-                    AccessKey = message.AccessKey
+                    Email = "email",
+                    PasswordHash = "password",
+                    AccessKey = message.AccessKey,
+                    Name = "name",
+                    Surname = "surname",
                 });
 
                 await dataContext.SaveChangesAsync();

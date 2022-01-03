@@ -25,7 +25,11 @@ namespace UserService.Test.Subscribers.EventHandlers
             {
                 await dataContext.Users.AddAsync(new User
                 {
-                    ExternalId = message.UserId
+                    ExternalId = message.UserId,
+                    Email = "email",
+                    PasswordHash = "password",
+                    Name = "name",
+                    Surname = "surname",
                 });
 
                 await dataContext.SaveChangesAsync();

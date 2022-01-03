@@ -41,6 +41,7 @@ namespace UserService.Test.Subscribers.Responders
             {
                 ExternalId = message.Id,
                 Email = "email@email.com",
+                PasswordHash = "password",
                 Name = "John",
                 Surname = "Doe",
                 RegistrationDate = DateTime.UtcNow
@@ -81,6 +82,7 @@ namespace UserService.Test.Subscribers.Responders
             {
                 ExternalId = message.Id,
                 Email = "email@email.com",
+                PasswordHash = "password",
                 Name = "John",
                 Surname = "Doe",
                 RegistrationDate = DateTime.UtcNow,

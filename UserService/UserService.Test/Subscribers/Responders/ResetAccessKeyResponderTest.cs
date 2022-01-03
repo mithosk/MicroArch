@@ -42,7 +42,11 @@ namespace UserService.Test.Subscribers.Responders
                 await dataContext.Users.AddAsync(new User
                 {
                     ExternalId = message.UserId,
-                    AccessKey = Guid.NewGuid()
+                    Email = "email",
+                    PasswordHash = "password",
+                    AccessKey = Guid.NewGuid(),
+                    Name = "name",
+                    Surname = "surname",
                 });
 
                 await dataContext.SaveChangesAsync();

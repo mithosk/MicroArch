@@ -47,7 +47,9 @@ namespace UserService.Test.Subscribers.Responders
                 {
                     ExternalId = Guid.NewGuid(),
                     Email = message.Email,
-                    PasswordHash = "12345"
+                    PasswordHash = "12345",
+                    Name = "name",
+                    Surname = "surname"
                 });
 
                 await dataContext.SaveChangesAsync();
@@ -84,7 +86,9 @@ namespace UserService.Test.Subscribers.Responders
                     ExternalId = userExternalId,
                     Email = message.Email,
                     PasswordHash = "12345",
-                    AccessKey = null
+                    AccessKey = null,
+                    Name = "name",
+                    Surname = "surname"
                 });
 
                 await dataContext.SaveChangesAsync();
@@ -123,7 +127,9 @@ namespace UserService.Test.Subscribers.Responders
                     ExternalId = userExternalId,
                     Email = message.Email,
                     PasswordHash = "12345",
-                    AccessKey = accessKey
+                    AccessKey = accessKey,
+                    Name = "name",
+                    Surname = "surname"
                 });
 
                 await dataContext.SaveChangesAsync();
