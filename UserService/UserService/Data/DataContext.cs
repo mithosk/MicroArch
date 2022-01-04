@@ -34,6 +34,7 @@ namespace UserService.Data
             {
                 etb.HasIndex(use => use.ExternalId).IsUnique();
                 etb.HasIndex(use => use.Email).IsUnique();
+                etb.HasIndex(use => use.AccessKey).IsUnique();
             });
         }
 
