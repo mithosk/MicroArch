@@ -32,6 +32,22 @@ namespace SharingGateway.Extensions
             return string.IsNullOrEmpty(pageSize) ? null : ushort.Parse(pageSize);
         }
 
+        public static bool CheckSortBy<TEnum>(this HttpRequest hrt) where TEnum : Enum
+        {
+            string sortBy = hrt.Headers["SortBy"].ToString();
+
+            try
+            {
+                Enum.Parse(typeof(TEnum), sortBy, false);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static TEnum GetSortBy<TEnum>(this HttpRequest hrt) where TEnum : Enum
         {
             string sortBy = hrt.Headers["SortBy"].ToString();
