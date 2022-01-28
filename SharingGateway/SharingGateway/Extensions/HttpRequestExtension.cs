@@ -32,13 +32,13 @@ namespace SharingGateway.Extensions
             return string.IsNullOrEmpty(pageSize) ? null : ushort.Parse(pageSize);
         }
 
-        public static T GetSortBy<T>(this HttpRequest hrt) where T : Enum
+        public static TEnum GetSortBy<TEnum>(this HttpRequest hrt) where TEnum : Enum
         {
             string sortBy = hrt.Headers["SortBy"].ToString();
 
             try
             {
-                return (T)Enum.Parse(typeof(T), sortBy, false);
+                return (TEnum)Enum.Parse(typeof(TEnum), sortBy, false);
             }
             catch
             {

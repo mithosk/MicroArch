@@ -25,7 +25,7 @@ namespace SharingGateway.Extensions
             hrt.Headers.Add("TotalItemCount", totalItemCount.ToString());
         }
 
-        public static void SetSortBy<T>(this HttpResponse hrt, T sortBy) where T : Enum
+        public static void SetSortBy<TEnum>(this HttpResponse hrt, TEnum sortBy) where TEnum : Enum
         {
             hrt.Headers.Add("SortBy", sortBy.ToString());
         }
