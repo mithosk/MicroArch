@@ -31,5 +31,19 @@ namespace SharingGateway.Extensions
 
             return string.IsNullOrEmpty(pageSize) ? null : ushort.Parse(pageSize);
         }
+
+        public static T GetSortBy<T>(this HttpRequest hrt) where T : Enum
+        {
+            string sortBy = hrt.Headers["SortBy"].ToString();
+
+            try
+            {
+                return (T)Enum.Parse(typeof(T), sortBy, false);
+            }
+            catch
+            {
+                return default;
+            }
+        }
     }
 }

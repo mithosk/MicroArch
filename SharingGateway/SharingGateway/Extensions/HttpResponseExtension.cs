@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace SharingGateway.Extensions
 {
@@ -22,6 +23,11 @@ namespace SharingGateway.Extensions
         public static void SetTotalItemCount(this HttpResponse hrt, uint totalItemCount)
         {
             hrt.Headers.Add("TotalItemCount", totalItemCount.ToString());
+        }
+
+        public static void SetSortBy<T>(this HttpResponse hrt, T sortBy) where T : Enum
+        {
+            hrt.Headers.Add("SortBy", sortBy.ToString());
         }
     }
 }
