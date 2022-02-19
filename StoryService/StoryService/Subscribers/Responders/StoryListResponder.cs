@@ -1,5 +1,6 @@
 ﻿using AgileServiceBus.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using StoryService.Data.Enums;
 using StoryService.Data.FilterBy;
 using StoryService.Data.Interfaces;
 using StoryService.Data.Models;
@@ -40,7 +41,7 @@ namespace StoryService.Subscribers.Responders
                 uint skip = Pager.RecordSkip(message.PageIndex, message.PageSize);
                 stories = await _dataContext.Stories
                     .AsNoTracking()
-                    .FindByAsync(filter, skip, message.PageSize);
+                    .FindByAsync(filter, (StorySortBy)message.SortType, skip, message.PageSize);
             }
 
             //counting

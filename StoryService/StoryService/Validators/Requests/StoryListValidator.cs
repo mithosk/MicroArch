@@ -9,6 +9,7 @@ namespace StoryService.Validators.Requests
         {
             RuleFor(slt => slt.PageIndex).NotEmpty();
             RuleFor(slt => (int)slt.PageSize).LessThanOrEqualTo(300);
+            RuleFor(slt => slt.SortType).NotNull();
         }
     }
 }

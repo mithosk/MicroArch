@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StoryService.Data.Enums;
 using StoryService.Data.FilterBy;
 using StoryService.Data.Models;
 using System;
@@ -17,11 +18,17 @@ namespace StoryService.Data.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public static async Task<List<Story>> FindByAsync(this IQueryable<Story> queryable, StoryFilterBy filter, uint? skip, ushort? take)
+        public static async Task<List<Story>> FindByAsync(this IQueryable<Story> queryable, StoryFilterBy filter, StorySortBy? sort, uint? skip, ushort? take)
         {
             IQueryable<Story> query = queryable
-                .FilterBy(filter)
-                .OrderByDescending(sto => sto.Id);
+                .FilterBy(filter);
+
+            query = sort switch
+            {
+                StorySortBy.DateAsc => query.OrderBy(sto => sto.PublicationDate),
+                StorySortBy.DateDesc => query.OrderByDescending(sto => sto.PublicationDate),
+                _ => query.OrderByDescending(sto => sto.Id)
+            };
 
             if (skip != null)
                 query = query.Skip((int)skip.Value);

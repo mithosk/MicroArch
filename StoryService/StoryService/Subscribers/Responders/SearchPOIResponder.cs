@@ -47,7 +47,7 @@ namespace StoryService.Subscribers.Responders
             {
                 stories = await _dataContext.Stories
                     .AsNoTracking()
-                    .FindByAsync(filter, null, QUERY_LIMIT);
+                    .FindByAsync(filter, null, null, QUERY_LIMIT);
             }
 
             //mapping
