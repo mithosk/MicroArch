@@ -1,21 +1,25 @@
 [
   {
     "TextFilter": null,
+    "SortType": "DateAsc",
     "PageIndex": 1,
     "PageSize": 10
   },
   {
     "TextFilter": "",
+    "SortType": "DateAsc",
     "PageIndex": 2,
     "PageSize": 20
   },
   {
     "TextFilter": "CastlE",
+    "SortType": "DateDesc",
     "PageIndex": 3,
     "PageSize": 30
   },
   {
     "TextFilter": "night",
+    "SortType": "DateDesc",
     "PageIndex": 4,
     "PageSize": 40
   }
