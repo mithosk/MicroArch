@@ -40,6 +40,27 @@ namespace StoryService.Data.Repositories
                 .ToListAsync();
         }
 
+        public static IQueryable<Story> QueryBy(this IQueryable<Story> queryable, StoryFilterBy filter, StorySortBy? sort, uint? skip, ushort? take)
+        {
+            IQueryable<Story> query = queryable
+               .FilterBy(filter);
+
+            query = sort switch
+            {
+                StorySortBy.DateAsc => query.OrderBy(sto => sto.PublicationDate),
+                StorySortBy.DateDesc => query.OrderByDescending(sto => sto.PublicationDate),
+                _ => query.OrderByDescending(sto => sto.Id)
+            };
+
+            if (skip != null)
+                query = query.Skip((int)skip.Value);
+
+            if (take != null)
+                query = query.Take(take.Value);
+
+            return query;
+        }
+
         public static async Task<uint> CountByAsync(this IQueryable<Story> queryable, StoryFilterBy filter)
         {
             return (uint)await queryable
