@@ -20,23 +20,7 @@ namespace StoryService.Data.Repositories
 
         public static async Task<List<Story>> FindByAsync(this IQueryable<Story> queryable, StoryFilterBy filter, StorySortBy? sort, uint? skip, ushort? take)
         {
-            IQueryable<Story> query = queryable
-                .FilterBy(filter);
-
-            query = sort switch
-            {
-                StorySortBy.DateAsc => query.OrderBy(sto => sto.PublicationDate),
-                StorySortBy.DateDesc => query.OrderByDescending(sto => sto.PublicationDate),
-                _ => query.OrderByDescending(sto => sto.Id)
-            };
-
-            if (skip != null)
-                query = query.Skip((int)skip.Value);
-
-            if (take != null)
-                query = query.Take(take.Value);
-
-            return await query
+            return await QueryBy(queryable, filter, sort, skip, take)
                 .ToListAsync();
         }
 
@@ -49,7 +33,7 @@ namespace StoryService.Data.Repositories
             {
                 StorySortBy.DateAsc => query.OrderBy(sto => sto.PublicationDate),
                 StorySortBy.DateDesc => query.OrderByDescending(sto => sto.PublicationDate),
-                _ => query.OrderByDescending(sto => sto.Id)
+                _ => query.OrderBy(sto => sto.Id)
             };
 
             if (skip != null)
