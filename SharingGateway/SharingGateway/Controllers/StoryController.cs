@@ -68,6 +68,9 @@ namespace SharingGateway.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Story>>> List([FromQuery] StoryFilter filter)
         {
+            //request sort type parameter
+            SortType sortType = Request.GetSortType<SortType>();
+
             //request pagination parameters
             uint pageIndex = Request.GetPageIndex() ?? DEFAULT_PAGE_INDEX;
             ushort pageSize = Request.GetPageSize() ?? DEFAULT_PAGE_SIZE;
@@ -76,10 +79,14 @@ namespace SharingGateway.Controllers
             FlowingStoryModels.Stories stories = await _bus.RequestAsync<FlowingStoryModels.Stories>(new FlowingStoryRequests.StoryList
             {
                 TextFilter = filter.Text,
+                SortType = (FlowingStoryEnums.SortType)sortType,
                 PageIndex = pageIndex,
                 PageSize = pageSize
             },
             _traceScope);
+
+            //request sort type parameter
+            Response.SetSortType(sortType);
 
             //response pagination parameters
             Response.SetPageIndex(pageIndex);

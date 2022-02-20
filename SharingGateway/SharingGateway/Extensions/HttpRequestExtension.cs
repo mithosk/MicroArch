@@ -18,6 +18,20 @@ namespace SharingGateway.Extensions
                 .Single();
         }
 
+        public static TSort GetSortType<TSort>(this HttpRequest hrt) where TSort : Enum
+        {
+            string sortType = hrt.Headers["SortType"].ToString();
+
+            try
+            {
+                return (TSort)Enum.Parse(typeof(TSort), sortType, false);
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
         public static uint? GetPageIndex(this HttpRequest hrt)
         {
             string pageIndex = hrt.Headers["PageIndex"].ToString();
@@ -30,36 +44,6 @@ namespace SharingGateway.Extensions
             string pageSize = hrt.Headers["PageSize"].ToString();
 
             return string.IsNullOrEmpty(pageSize) ? null : ushort.Parse(pageSize);
-        }
-
-        public static bool CheckSortBy<TEnum>(this HttpRequest hrt) where TEnum : Enum
-        {
-            string sortBy = hrt.Headers["SortBy"].ToString();
-
-            try
-            {
-                Enum.Parse(typeof(TEnum), sortBy, false);
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static TEnum GetSortBy<TEnum>(this HttpRequest hrt) where TEnum : Enum
-        {
-            string sortBy = hrt.Headers["SortBy"].ToString();
-
-            try
-            {
-                return (TEnum)Enum.Parse(typeof(TEnum), sortBy, false);
-            }
-            catch
-            {
-                return default;
-            }
         }
     }
 }
