@@ -29,12 +29,13 @@ namespace StoryService.Data.Repositories
             IQueryable<Story> query = queryable
                .FilterBy(filter);
 
-            query = sort switch
-            {
-                StorySortBy.DateAsc => query.OrderBy(sto => sto.PublicationDate),
-                StorySortBy.DateDesc => query.OrderByDescending(sto => sto.PublicationDate),
-                _ => query.OrderBy(sto => sto.Id)
-            };
+            if (sort.HasValue)
+                query = sort switch
+                {
+                    StorySortBy.DateAsc => query.OrderBy(sto => sto.PublicationDate),
+                    StorySortBy.DateDesc => query.OrderByDescending(sto => sto.PublicationDate),
+                    _ => throw new NotImplementedException(),
+                };
 
             if (skip != null)
                 query = query.Skip((int)skip.Value);
