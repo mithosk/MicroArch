@@ -48,6 +48,7 @@ app.get('/story-list', async (req, res) => {
     var storiesApiRes = await axios.get(apiHost + '/stories/?text=' + textFiler, {
       headers: {
         'Authorization': 'Bearer ' + req.session.token,
+        'SortType': 'DateDesc',
         'PageIndex': '1',
         'PageSize': '30'
       }
