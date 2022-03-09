@@ -69,7 +69,7 @@ namespace SharingGateway.Controllers
         public async Task<ActionResult<List<Story>>> List([FromQuery] StoryFilter filter)
         {
             //request sort type parameter
-            SortType sortType = Request.GetSortType<SortType>();
+            StorySortType sortType = Request.GetSortType<StorySortType>();
 
             //request pagination parameters
             uint pageIndex = Request.GetPageIndex() ?? DEFAULT_PAGE_INDEX;
