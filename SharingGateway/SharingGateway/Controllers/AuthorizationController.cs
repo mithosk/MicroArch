@@ -91,15 +91,15 @@ namespace SharingGateway.Controllers
             return authorization;
         }
 
-        [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult> Delete(Guid id)
+        [HttpDelete("{userId:Guid}")]
+        public async Task<ActionResult> Delete(Guid userId)
         {
-            if (id != Request.GetUserId())
+            if (userId != Request.GetUserId())
                 return Forbid();
 
             bool found = await _bus.RequestAsync<bool>(new FlowingUserRequests.ResetAccessKey
             {
-                UserId = id
+                UserId = userId
             },
             _traceScope);
 
