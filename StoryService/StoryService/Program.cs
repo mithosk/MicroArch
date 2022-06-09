@@ -2,11 +2,14 @@
 using AgileServiceBus.Drivers;
 using AgileServiceBus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using StoryService.BusNamespaces.Flowing.Story.Events;
 using StoryService.BusNamespaces.Flowing.Story.Requests;
 using StoryService.Data;
 using StoryService.Data.Interfaces;
+using StoryService.Subscribers.EventHandlers;
 using StoryService.Subscribers.Responders;
 using StoryService.Utilities.Logic;
+using StoryService.Validators.Events;
 using StoryService.Validators.Requests;
 
 namespace StoryService
@@ -18,6 +21,13 @@ namespace StoryService
             HostFactory.Run(() =>
             {
                 IMicroserviceLifetime ml = new RabbitMQDriver(Env.Get("RABBITMQ_CONN_STR"));
+
+
+
+
+
+                //event handlers
+                ml.Subscribe<ObsoleteStoryEventHandler, ObsoleteStory>(null, new ObsoleteStoryValidator(), null, null);
 
 
 
