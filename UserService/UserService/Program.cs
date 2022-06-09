@@ -27,6 +27,7 @@ namespace UserService
 
 
                 //event handlers
+                ml.Subscribe<ObsoleteStoryEventHandler, ObsoleteStory>(null, new ObsoleteStoryValidator(), null, null);
                 ml.Subscribe<PublishedStoryEventHandler, PublishedStory>(null, new PublishedStoryValidator(), null, null);
 
 
