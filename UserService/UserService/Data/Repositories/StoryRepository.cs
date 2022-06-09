@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,13 @@ namespace UserService.Data.Repositories
 {
     public static class StoryRepository
     {
+        public static async Task<Story> FindByAsync(this IQueryable<Story> queryable, Guid externalId)
+        {
+            return await queryable
+                .Where(sto => sto.ExternalId == externalId)
+                .SingleOrDefaultAsync();
+        }
+
         public static async Task<List<Story>> FindByAsync(this IQueryable<Story> queryable, StoryFilterBy filter, ushort? take)
         {
             IQueryable<Story> query = queryable
