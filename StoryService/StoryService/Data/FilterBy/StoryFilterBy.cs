@@ -1,4 +1,6 @@
-﻿namespace StoryService.Data.FilterBy
+﻿using System;
+
+namespace StoryService.Data.FilterBy
 {
     public class StoryFilterBy
     {
@@ -7,5 +9,6 @@
         public float? MaxLat { get; set; }
         public float? MinLon { get; set; }
         public float? MaxLon { get; set; }
+        public DateTime? DateFrom { get; set; }
     }
 }
