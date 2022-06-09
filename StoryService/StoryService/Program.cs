@@ -27,6 +27,7 @@ namespace StoryService
 
 
                 //event handlers
+                ml.Subscribe<ObsoleteStoriesEventHandler, ObsoleteStories>(null, new ObsoleteStoriesValidator(), null, null);
                 ml.Subscribe<ObsoleteStoryEventHandler, ObsoleteStory>(null, new ObsoleteStoryValidator(), null, null);
 
 
