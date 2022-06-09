@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Json\Events\ObsoleteStory.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Json\Requests\SearchPOI.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
