@@ -29,7 +29,7 @@ namespace UserService.Test.Subscribers.EventHandlers
                     Email = "email",
                     PasswordHash = "password",
                     Name = "name",
-                    Surname = "surname",
+                    Surname = "surname"
                 });
 
                 await dataContext.SaveChangesAsync();
@@ -47,7 +47,7 @@ namespace UserService.Test.Subscribers.EventHandlers
             using (IDataContext dataContext = new DataContext(_dataOptions))
             {
                 User user = await dataContext.Users
-                    .Where(sto => sto.ExternalId == message.UserId)
+                    .Where(use => use.ExternalId == message.UserId)
                     .SingleOrDefaultAsync();
 
                 Assert.NotEmpty(user.Stories);
