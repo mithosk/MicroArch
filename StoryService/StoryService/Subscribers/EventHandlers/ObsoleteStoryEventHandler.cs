@@ -3,7 +3,6 @@ using StoryService.BusNamespaces.Flowing.Story.Events;
 using StoryService.Data.Interfaces;
 using StoryService.Data.Models;
 using StoryService.Data.Repositories;
-using StoryService.Exceptions;
 using System.Threading.Tasks;
 
 namespace StoryService.Subscribers.EventHandlers
@@ -27,16 +26,13 @@ namespace StoryService.Subscribers.EventHandlers
             using (TraceScope.CreateSubScope("FindStory"))
                 story = await _dataContext.Stories.FindByAsync(message.StoryId);
 
-            //story not found
-            if (story == null)
-                throw new ObjectNotFoundException("Story not found");
-
             //delete story
-            using (TraceScope.CreateSubScope("SaveChanges"))
-            {
-                _dataContext.Stories.Remove(story);
-                await _dataContext.SaveChangesAsync();
-            }
+            if (story != null)
+                using (TraceScope.CreateSubScope("SaveChanges"))
+                {
+                    _dataContext.Stories.Remove(story);
+                    await _dataContext.SaveChangesAsync();
+                }
         }
     }
 }
