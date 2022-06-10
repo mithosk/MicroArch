@@ -29,7 +29,7 @@ namespace StoryService.Subscribers.EventHandlers
             //filter setting
             StoryFilterBy filter = new()
             {
-                DateTo = message.MinDate
+                DateTo = message.DateTo
             };
 
             //find stories
