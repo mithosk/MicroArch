@@ -5,3 +5,4 @@ node_modules/
 UserService/UserService/env
 StoryService/StoryService/env
 SharingGateway/SharingGateway/env
+CleanerScheduler/CleanerScheduler/env
