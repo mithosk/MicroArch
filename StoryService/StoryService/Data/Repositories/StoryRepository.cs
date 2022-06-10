@@ -88,10 +88,10 @@ namespace StoryService.Data.Repositories
                     .Where(sto => sto.Longitude <= filter.MaxLon);
             }
 
-            if (filter.DateFrom.HasValue)
+            if (filter.DateTo.HasValue)
             {
                 query = query
-                    .Where(sto => sto.PublicationDate >= filter.DateFrom);
+                    .Where(sto => sto.PublicationDate <= filter.DateTo);
             }
 
             return query;
