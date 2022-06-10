@@ -22,7 +22,7 @@ namespace CleanerScheduler
                 {
                     return new ObsoleteStories
                     {
-                        MinDate = DateTime.UtcNow.AddDays(-7)
+                        DateTo = DateTime.UtcNow.AddDays(-7)
                     };
                 },
                 async (Exception e) =>
