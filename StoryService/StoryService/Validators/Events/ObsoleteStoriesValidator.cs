@@ -8,7 +8,7 @@ namespace StoryService.Validators.Events
     {
         public ObsoleteStoriesValidator()
         {
-            RuleFor(osb => osb.MinDate).NotEmpty().LessThanOrEqualTo(DateTime.UtcNow);
+            RuleFor(osb => osb.DateTo).NotEmpty().LessThanOrEqualTo(DateTime.UtcNow);
         }
     }
 }
