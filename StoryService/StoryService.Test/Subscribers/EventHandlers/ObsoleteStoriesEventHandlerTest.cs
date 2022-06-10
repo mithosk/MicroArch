@@ -30,7 +30,7 @@ namespace StoryService.Test.Subscribers.EventHandlers
                     ExternalId = notifyStoryId,
                     Title = "title",
                     Tale = "tale",
-                    PublicationDate = message.MinDate.AddDays(-1)
+                    PublicationDate = message.DateTo.AddDays(-1)
                 });
 
                 await dataContext.Stories.AddAsync(new Story
@@ -38,7 +38,7 @@ namespace StoryService.Test.Subscribers.EventHandlers
                     ExternalId = Guid.NewGuid(),
                     Title = "title",
                     Tale = "tale",
-                    PublicationDate = message.MinDate.AddDays(1)
+                    PublicationDate = message.DateTo.AddDays(1)
                 });
 
                 await dataContext.SaveChangesAsync();
